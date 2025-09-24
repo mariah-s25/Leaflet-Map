@@ -49,7 +49,7 @@
     }
 
     // Load GeoJSON
-    fetch("https://github.com/mariah-s25/Leaflet-Map/blob/main/Banana_Fields.geojson") 
+    fetch("https://raw.githubusercontent.com/mariah-s25/Leaflet-Map/main/Banana_Fields.geojson") 
       .then(response => response.json())
       .then(data => {
         L.geoJSON(data, {
@@ -68,5 +68,6 @@
   </script>
 </body>
 </html>
+
 
 
