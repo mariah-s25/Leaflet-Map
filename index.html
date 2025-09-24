@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Interactive Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <style>
+    body { margin:0; padding:0; }
+    #map { width: 100%; height: 100vh; }
+    .legend { background: white; padding: 10px; line-height: 18px; }
+    .legend-color { display:inline-block; width:20px; height:20px; margin-right:5px; border:1px solid #000; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script>
+    // Initialize map
+    var map = L.map('map').setView([33.9, 35.5], 8); // Change coordinates & zoom as needed
+
+    // Add OpenStreetMap base layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Define colors for your features (example: change or add classes)
+    function getColor(feature) {
+      // Example: use a property called 'type' to color
+      switch(feature.properties.type) {
+        case "A": return "#1f77b4";
+        case "B": return "#ff7f0e";
+        case "C": return "#2ca02c";
+        default: return "#999999";
+      }
+    }
+
+    function style(feature) {
+      return {
+        color: getColor(feature),
+        weight: 2,
+        fillOpacity: 0.5
+      };
+    }
+
+    // Load GeoJSON
+    fetch("C:\Users\User\OneDrive\Desktop\Leaflet\Banana_Fields.geojson") // <-- Replace with your file name
+      .then(response => response.json())
+      .then(data => {
+        L.geoJSON(data, {
+          style: style,
+          onEachFeature: function(feature, layer) {
+            // Popup with all attributes
+            var popupContent = "<table>";
+            for (var key in feature.properties) {
+              popupContent += "<tr><th>" + key + "</th><td>" + feature.properties[key] + "</td></tr>";
+            }
+            popupContent += "</table>";
+            layer.bindPopup(popupContent);
+          }
+        }).addTo(map);
+      });
+  </script>
+</body>
+</html>
