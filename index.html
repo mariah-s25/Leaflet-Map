@@ -58,11 +58,9 @@
     fetch("https://raw.githubusercontent.com/mariah-s25/Leaflet-Map/main/Banana_Fields.geojson")
       .then(response => response.json())
       .then(data => {
-        // Create a layer group per class
         var classLayers = {};
         Object.keys(classColors).forEach(cls => { classLayers[cls] = L.layerGroup().addTo(map); });
 
-        // Add features to corresponding class layer
         L.geoJSON(data, {
           style: style,
           onEachFeature: function(feature, layer) {
@@ -94,3 +92,4 @@
   </script>
 </body>
 </html>
+
